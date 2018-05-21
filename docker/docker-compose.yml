@@ -1,0 +1,24 @@
+version: '3.6'
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: web.Dockerfile
+    volumes:
+      - /var/www/mesh-task.local:/var/www/html
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - 80:80
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - /opt/mysql-data/mesh-task:/var/lib/mysql
+    environment:
+      TZ: Europe/Moscow
+      MYSQL_ROOT_PASSWORD: mesh-task
+      MYSQL_DATABASE: mesh-task
+      MYSQL_USER: mesh-task
+      MYSQL_PASSWORD: mesh-task

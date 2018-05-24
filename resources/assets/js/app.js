@@ -1,22 +1,32 @@
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Categories from './components/Categories.vue'
+import Category from './components/Category.vue'
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+Vue.use(VueRouter)
 
-require('./bootstrap');
+Vue.component('categories', Categories)
+Vue.component('category', Category)
 
-window.Vue = require('vue');
+const routes = [
+  { path: '/categories/:id', component: {} },
+]
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+const router = new VueRouter({
+  routes
+})
 
 const app = new Vue({
-    el: '#app'
-});
+  router,
+  data: {
+    categories: [
+      {id: 1, name: 'test 1'},
+      {id: 2, name: 'test 2', children: [
+        {id: 3, name: 'test 3'},
+        {id: 4, name: 'test 4', children: [
+          {id: 5, name: 'test 5'}
+        ]}
+      ]},
+    ]
+  }
+}).$mount('#app')

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\Category;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,15 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        Category::deleting(function ($category) {
+            foreach ($category->descendants as $descendant) {
+                foreach ($descendant->products as $product) {
+                    $product->delete();
+                };
+            }
+            foreach ($category->products as $product) {
+                $product->delete();
+            }
+        });
     }
 }

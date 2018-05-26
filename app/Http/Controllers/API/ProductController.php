@@ -4,9 +4,9 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Category;
+use App\Product;
 
-class CategoryController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::defaultOrder()->get()->toTree();
+        return Product::all();
     }
 
     /**
@@ -61,13 +61,5 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    /**
-     * @return \Illuminate\Http\Response
-     */
-    public function products($id)
-    {
-        return Category::findOrFail($id)->products;
     }
 }

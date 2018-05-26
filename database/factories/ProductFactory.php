@@ -7,6 +7,6 @@ $factory->define(Product::class, function (Faker $faker) {
     return [
         'name' => rtrim($faker->sentence(2), '.'),
         'description' => $faker->paragraph,
-        'image' => 'https://picsum.photos/200?random',
+        'image' => 'https://bulma.io/images/placeholders/640x480.png',
     ];
 });

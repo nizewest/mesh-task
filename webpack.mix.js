@@ -1,4 +1,4 @@
-let mix = require('laravel-mix');
+let mix = require("laravel-mix")
 
 /*
  |--------------------------------------------------------------------------
@@ -11,7 +11,9 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+mix
+  .js("resources/assets/js/app.js", "public/js")
+  .sass("resources/assets/sass/app.scss", "public/css")
+  .sourceMaps()
 
-mix.browserSync('mesh-task.local');
+mix.browserSync("mesh-task.local")

@@ -14,9 +14,7 @@
       <div class="columns">
         <div class="column is-one-quarter">
           <aside class="menu">
-            <p class="menu-label">
-              Категории товаров
-            </p>
+            <p class="menu-label" v-html="categories.length ? 'Категории товаров' : 'Загрузка...'"></p>
             <categories :categories="categories"></categories>
           </aside>
         </div>

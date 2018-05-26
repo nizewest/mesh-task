@@ -1,32 +1,35 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Categories from './components/Categories.vue'
-import Category from './components/Category.vue'
+import Vue from "vue"
+import VueRouter from "vue-router"
+import VueResource from "vue-resource"
+import Categories from "./components/Categories.vue"
+import Category from "./components/Category.vue"
+import Products from "./components/Products.vue"
 
 Vue.use(VueRouter)
+Vue.use(VueResource)
 
-Vue.component('categories', Categories)
-Vue.component('category', Category)
+Vue.component("categories", Categories)
+Vue.component("category", Category)
+Vue.component("products", Products)
 
-const routes = [
-  { path: '/categories/:id', component: {} },
-]
+const routes = [{ path: "/:id", component: Products }]
 
 const router = new VueRouter({
   routes
 })
 
-const app = new Vue({
+new Vue({
   router,
   data: {
-    categories: [
-      {id: 1, name: 'test 1'},
-      {id: 2, name: 'test 2', children: [
-        {id: 3, name: 'test 3'},
-        {id: 4, name: 'test 4', children: [
-          {id: 5, name: 'test 5'}
-        ]}
-      ]},
-    ]
+    categories: []
+  },
+  http: {
+    root: "/api"
+  },
+  created() {
+    let category = this.$resource("categories")
+    category.get().then(response => {
+      this.categories = response.body
+    })
   }
-}).$mount('#app')
+}).$mount("#app")

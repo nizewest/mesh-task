@@ -26,7 +26,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Product::create($request->only('name', 'description', 'image', 'category_id'));
     }
 
     /**
@@ -37,7 +37,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        return Product::findOrFail($id);
     }
 
     /**
@@ -49,7 +49,10 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $product->update($request->only('name', 'description', 'image', 'category_id'));
+
+        return $product;
     }
 
     /**
@@ -60,6 +63,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $product->delete();
+
+        return 'success';
     }
 }

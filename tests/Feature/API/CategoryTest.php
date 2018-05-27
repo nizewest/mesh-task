@@ -13,7 +13,9 @@ class CategoryTest extends TestCase
     public function testIndex()
     {
         $response = $this->get('/api/categories');
+
         $content = json_decode($response->assertStatus(200)->getContent());
+
         if (!empty($content)) {
             $response->assertJsonStructure([
                 [
@@ -28,7 +30,9 @@ class CategoryTest extends TestCase
     {
         $category = Category::first();
         $response = $this->get('/api/categories/'.$category->id.'/products');
+
         $content = json_decode($response->assertStatus(200)->getContent());
+
         if (!empty($content)) {
             $response->assertJsonStructure([
                 [
@@ -53,10 +57,13 @@ class CategoryTest extends TestCase
     public function testUpdate()
     {
         $category = Category::first();
+
         $response = $this->put('/api/categories/'.$category->id, [
             'name' => 'test'
         ]);
+
         $response->assertStatus(200);
+
         $this->assertDatabaseHas('categories', [
             'id' => $category->id,
             'name' => 'test'
@@ -68,9 +75,11 @@ class CategoryTest extends TestCase
         $response = $this->post('/api/categories', [
             'name' => 'test'
         ]);
+
         $response->assertStatus(201);
 
         $content = json_decode($response->getContent());
+
         $this->assertDatabaseHas('categories', [
             'id' => $content->id,
             'name' => 'test'
@@ -93,6 +102,7 @@ class CategoryTest extends TestCase
         }
 
         $response = $this->delete('/api/categories/'.$category->id);
+
         $response->assertStatus(200);
 
         $this->assertDatabaseMissing('categories', [

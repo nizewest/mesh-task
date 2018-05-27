@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -46,6 +47,71 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($request->expectsJson() || $request->is('api/*')) {
+            return $this->renderJson($exception);
+        }
+
         return parent::render($request, $exception);
+    }
+
+    /**
+     * @param  \Exception  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function renderJson(Exception $exception)
+    {
+        $response = [];
+
+        $statusCode = $this->getJsonStatusCode($exception);
+
+        $response['error'] = $this->getJsonErrorMessage($exception, $statusCode);
+
+        if (config('app.debug')) {
+            $response['trace'] = $exception->getTrace();
+            $response['code'] = $exception->getCode();
+        }
+
+        return response()->json($response, $statusCode);
+    }
+
+    /**
+     * @param  \Exception  $exception
+     * @return int
+     */
+    protected function getJsonStatusCode(Exception $exception)
+    {
+        if (method_exists($exception, 'getStatusCode')) {
+            $statusCode = $exception->getStatusCode();
+        } elseif ($exception instanceof ModelNotFoundException) {
+            $statusCode = 404;
+        } else {
+            $statusCode = 500;
+        }
+
+        return $statusCode;
+    }
+
+    /**
+     * @param  \Exception  $exception
+     * @param  int  $statusCode
+     * @return string
+     */
+    protected function getJsonErrorMessage(Exception $exception, $statusCode)
+    {
+        switch ($statusCode) {
+            case 404:
+                $error = 'Not Found';
+                break;
+
+            case 403:
+                $error = 'Forbidden';
+                break;
+
+            default:
+                $error = $exception->getMessage();
+                break;
+        }
+
+        return $error;
     }
 }

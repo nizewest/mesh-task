@@ -1,2 +1,6 @@
 // Bulma
 @import "~bulma/bulma";
+
+[v-cloak] {
+    display: none;
+}

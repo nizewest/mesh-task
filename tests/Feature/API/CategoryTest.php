@@ -117,6 +117,6 @@ class CategoryTest extends TestCase
             $this->assertDatabaseMissing('products', $productsId);
         }
 
-        $response->assertJson(['message' => __('messages.success.category.destroyed')]);
+        $response->assertJsonStructure(['message']);
     }
 }

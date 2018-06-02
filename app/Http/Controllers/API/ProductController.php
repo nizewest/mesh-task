@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Category;
 use App\Product;
 
 class ProductController extends Controller
@@ -26,7 +27,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        return Product::create($request->only('name', 'description', 'image', 'category_id'));
+        Category::findOrFail($request->input('category_id'));
+        $product = Product::create($request->only('name', 'description', 'image', 'category_id'));
+
+        return response()->json(['data' => $product, 'message' => __('messages.success.product.stored')], 201);
     }
 
     /**

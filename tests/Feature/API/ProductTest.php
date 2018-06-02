@@ -69,11 +69,12 @@ class ProductTest extends TestCase
         ]);
 
         $response->assertStatus(201);
+        $response->assertJsonStructure(['data', 'message']);
 
         $content = json_decode($response->getContent());
 
         $this->assertDatabaseHas('products', [
-            'id' => $content->id,
+            'id' => $content->data->id,
             'name' => 'test 1',
             'description' => 'test 2',
             'image' => 'test 3',
@@ -89,6 +90,6 @@ class ProductTest extends TestCase
         $this->assertDatabaseMissing('products', [
             'id' => $product->id
         ]);
-        $response->assertJson(['message' => __('messages.success.product.destroyed')]);
+        $response->assertJsonStructure(['message']);
     }
 }

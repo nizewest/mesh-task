@@ -19,7 +19,18 @@
           </aside>
         </div>
         <div class="column">
-          <router-view></router-view>
+          <div class="tile is-vertical">
+            <div class="tile is-child" v-if="messages.success || messages.error" v-cloak>
+              <div class="notification is-success" v-if="messages.success">
+                <button class="delete" @click="messages.success = ''"></button>
+                @{{ messages.success }}
+              </div>
+            </div>
+            <div class="tile is-child">
+              <router-link to="/products/create" class="button" :class="{'is-static': $route.name == 'products.create'}">Добавить товар</router-link>
+            </div>
+            <router-view></router-view>
+          </div>
         </div>
       </div>
     </div>

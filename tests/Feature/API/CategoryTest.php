@@ -116,5 +116,7 @@ class CategoryTest extends TestCase
         foreach ($productsIds as $productsId) {
             $this->assertDatabaseMissing('products', $productsId);
         }
+
+        $response->assertJson(['message' => __('messages.success.category.destroyed')]);
     }
 }

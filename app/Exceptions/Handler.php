@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
 
         $statusCode = $this->getJsonStatusCode($exception);
 
-        $response['error'] = $this->getJsonErrorMessage($exception, $statusCode);
+        $response['message'] = $this->getJsonErrorMessage($exception, $statusCode);
 
         if (config('app.debug')) {
             $response['trace'] = $exception->getTrace();

@@ -64,9 +64,12 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
-        $category->delete();
 
-        return 'success';
+        if ($category->delete()) {
+            return ['message' => __('messages.success.category.destroyed')];
+        } else {
+            abort(500, __('messages.error.category.not_destroyed'));
+        }
     }
 
     /**

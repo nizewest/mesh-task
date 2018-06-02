@@ -89,5 +89,6 @@ class ProductTest extends TestCase
         $this->assertDatabaseMissing('products', [
             'id' => $product->id
         ]);
+        $response->assertJson(['message' => __('messages.success.product.destroyed')]);
     }
 }
